@@ -1,0 +1,401 @@
+// 上海地标数据。坐标为公开地图数据的近似值（WGS84），Demo 用途，非测绘精度。
+// 坐标系说明：OpenStreetMap/OpenFreeMap 为 WGS84，与本数据一致，无需 GCJ-02 转换。
+//
+// landmarks：36 个「策展」地标——有飞越镜头参数、有 galgame 故事（见 src/stories.ts）。
+// extraPois：扩展搜索集（34 条）——知名 POI 近似坐标，仅用于搜索与 flyTo 浏览，无故事。
+
+export type LandmarkCategory =
+  | '摩天楼'
+  | '历史'
+  | '街区'
+  | '文化'
+  | '公园'
+  | '校园'
+  | '宗教'
+  | '商业'
+  | '搜索';
+
+export interface Landmark {
+  id: string;
+  name: string;
+  category: LandmarkCategory;
+  lon: number;
+  lat: number;
+  note: string;
+  /** 飞越时的镜头参数 */
+  view?: { zoom?: number; pitch?: number; bearing?: number };
+}
+
+export const landmarks: Landmark[] = [
+  {
+    id: 'oriental-pearl',
+    name: '东方明珠广播电视塔',
+    category: '摩天楼',
+    lon: 121.5051,
+    lat: 31.2397,
+    note: '陆家嘴地标，1994 年建成，塔高 468 米。',
+    view: { zoom: 16.5, pitch: 62, bearing: 200 },
+  },
+  {
+    id: 'shanghai-tower',
+    name: '上海中心大厦',
+    category: '摩天楼',
+    lon: 121.5050,
+    lat: 31.2336,
+    note: '632 米，中国第一高楼，2015 年建成。',
+    view: { zoom: 16.5, pitch: 65, bearing: 30 },
+  },
+  {
+    id: 'swfc',
+    name: '上海环球金融中心',
+    category: '摩天楼',
+    lon: 121.5078,
+    lat: 31.2337,
+    note: '492 米，顶部「开瓶器」造型。',
+    view: { zoom: 16.5, pitch: 62, bearing: 110 },
+  },
+  {
+    id: 'jinmao',
+    name: '金茂大厦',
+    category: '摩天楼',
+    lon: 121.5067,
+    lat: 31.2346,
+    note: '420.5 米，宝塔比例的现代演绎。',
+    view: { zoom: 16.5, pitch: 60, bearing: 250 },
+  },
+  {
+    id: 'the-bund',
+    name: '外滩',
+    category: '历史',
+    lon: 121.4900,
+    lat: 31.2400,
+    note: '黄浦江西岸万国建筑博览群。',
+    view: { zoom: 16, pitch: 58, bearing: 100 },
+  },
+  {
+    id: 'yuyuan',
+    name: '豫园',
+    category: '历史',
+    lon: 121.4924,
+    lat: 31.2273,
+    note: '明代古典园林，城隍庙商圈核心。',
+    view: { zoom: 16.5, pitch: 60, bearing: 210 },
+  },
+  {
+    id: 'nanjing-road',
+    name: '南京路步行街',
+    category: '街区',
+    lon: 121.4780,
+    lat: 31.2360,
+    note: '中华商业第一街，向东直抵外滩。',
+    view: { zoom: 16, pitch: 58, bearing: 95 },
+  },
+  {
+    id: 'peoples-square',
+    name: '人民广场',
+    category: '街区',
+    lon: 121.4737,
+    lat: 31.2304,
+    note: '城市中心广场，市府与博物馆所在地。',
+    view: { zoom: 15.5, pitch: 55, bearing: 180 },
+  },
+  {
+    id: 'xintiandi',
+    name: '新天地',
+    category: '街区',
+    lon: 121.4705,
+    lat: 31.2231,
+    note: '石库门里弄改造的商业街区。',
+    view: { zoom: 16, pitch: 58, bearing: 45 },
+  },
+  {
+    id: 'jingan-temple',
+    name: '静安寺',
+    category: '历史',
+    lon: 121.4487,
+    lat: 31.2235,
+    note: '千年古刹，闹市中的鎏金梵宇。',
+    view: { zoom: 16.5, pitch: 60, bearing: 160 },
+  },
+  {
+    id: 'wukang-mansion',
+    name: '武康大楼',
+    category: '历史',
+    lon: 121.4333,
+    lat: 31.2167,
+    note: '诺曼底大楼，上海标志性历史公寓。',
+    view: { zoom: 17, pitch: 60, bearing: 300 },
+  },
+  {
+    id: 'china-art-museum',
+    name: '中华艺术宫',
+    category: '文化',
+    lon: 121.5033,
+    lat: 31.1838,
+    note: '世博会中国馆改建，斗拱造型。',
+    view: { zoom: 16, pitch: 55, bearing: 20 },
+  },
+  // ---- 以下 12 个为城市内容扩充（2026-10-03）：有故事（src/stories.ts）----
+  {
+    id: 'chenghuangmiao',
+    name: '城隍庙',
+    category: '历史',
+    lon: 121.4925,
+    lat: 31.2271,
+    note: '道教庙宇与老街商圈，豫园紧邻其北。',
+    view: { zoom: 16.5, pitch: 60, bearing: 150 },
+  },
+  {
+    id: 'tianzifang',
+    name: '田子坊',
+    category: '街区',
+    lon: 121.4690,
+    lat: 31.2115,
+    note: '弄堂里的手工艺与画廊聚落。',
+    view: { zoom: 17, pitch: 60, bearing: 45 },
+  },
+  {
+    id: 'shanghai-museum',
+    name: '上海博物馆',
+    category: '文化',
+    lon: 121.4751,
+    lat: 31.2298,
+    note: '青铜陶瓷书画，人民广场三大建筑之一。',
+    view: { zoom: 17, pitch: 58, bearing: 200 },
+  },
+  {
+    id: 'xujiahui-cathedral',
+    name: '徐家汇天主堂',
+    category: '宗教',
+    lon: 121.4360,
+    lat: 31.1950,
+    note: '远东第一大天主堂，哥特双塔。',
+    view: { zoom: 17, pitch: 60, bearing: 100 },
+  },
+  {
+    id: 'fudan-university',
+    name: '复旦大学',
+    category: '校园',
+    lon: 121.5020,
+    lat: 31.2970,
+    note: '百年学府，相辉堂与光华楼。',
+    view: { zoom: 16.5, pitch: 58, bearing: 180 },
+  },
+  {
+    id: 'mansion-1933',
+    name: '1933 老场坊',
+    category: '历史',
+    lon: 121.4950,
+    lat: 31.2630,
+    note: '远东最大屠宰场改创意园区。',
+    view: { zoom: 17, pitch: 60, bearing: 260 },
+  },
+  {
+    id: 'ccp-site',
+    name: '中共一大会址',
+    category: '历史',
+    lon: 121.4670,
+    lat: 31.2220,
+    note: '石库门里，1921 年的会议室。',
+    view: { zoom: 17, pitch: 58, bearing: 30 },
+  },
+  {
+    id: 'qibao-old-street',
+    name: '七宝老街',
+    category: '街区',
+    lon: 121.3710,
+    lat: 31.1480,
+    note: '闵行的千年水乡老街。',
+    view: { zoom: 16.5, pitch: 60, bearing: 90 },
+  },
+  {
+    id: 'shanghai-grand-theatre',
+    name: '上海大剧院',
+    category: '文化',
+    lon: 121.4740,
+    lat: 31.2320,
+    note: '人民广场上的弧顶剧院。',
+    view: { zoom: 17, pitch: 58, bearing: 150 },
+  },
+  {
+    id: 'longhua-temple',
+    name: '龙华寺',
+    category: '宗教',
+    lon: 121.4530,
+    lat: 31.1720,
+    note: '千年古刹与龙华塔，三月庙会闻名。',
+    view: { zoom: 17, pitch: 60, bearing: 210 },
+  },
+  {
+    id: 'm50',
+    name: 'M50 创意园',
+    category: '文化',
+    lon: 121.4560,
+    lat: 31.2520,
+    note: '苏州河畔涂鸦与画廊。',
+    view: { zoom: 17, pitch: 60, bearing: 300 },
+  },
+  {
+    id: 'zhujiajiao',
+    name: '朱家角古镇',
+    category: '街区',
+    lon: 121.0480,
+    lat: 31.1100,
+    note: '上海近郊最大的水乡古镇。飞行边界外，可 flyTo 浏览。',
+    view: { zoom: 16, pitch: 58, bearing: 0 },
+  },
+  // ---- 以下 12 个为参赛轮扩充（2026-10-03）：有故事 ----
+  {
+    id: 'dashijie',
+    name: '大世界',
+    category: '文化',
+    lon: 121.4820,
+    lat: 31.2285,
+    note: '老上海游乐场，塔楼八角形。',
+    view: { zoom: 17, pitch: 60, bearing: 120 },
+  },
+  {
+    id: 'jade-buddha-temple',
+    name: '玉佛禅寺',
+    category: '宗教',
+    lon: 121.4510,
+    lat: 31.2470,
+    note: '清末缅甸白玉佛供奉处。',
+    view: { zoom: 17, pitch: 60, bearing: 200 },
+  },
+  {
+    id: 'tongji-university',
+    name: '同济大学',
+    category: '校园',
+    lon: 121.5010,
+    lat: 31.2850,
+    note: '建筑与土木学科重镇。',
+    view: { zoom: 16.5, pitch: 58, bearing: 160 },
+  },
+  {
+    id: 'binjiang-avenue',
+    name: '滨江大道',
+    category: '街区',
+    lon: 121.5060,
+    lat: 31.2420,
+    note: '陆家嘴段，看外滩的最佳长椅。',
+    view: { zoom: 16.5, pitch: 56, bearing: 270 },
+  },
+  {
+    id: 'shanghai-science-museum',
+    name: '上海科技馆',
+    category: '文化',
+    lon: 121.5170,
+    lat: 31.2200,
+    note: '浦东世纪广场的科普地标。',
+    view: { zoom: 17, pitch: 58, bearing: 60 },
+  },
+  {
+    id: 'shanghai-ocean-aquarium',
+    name: '上海海洋水族馆',
+    category: '文化',
+    lon: 121.5090,
+    lat: 31.2390,
+    note: '陆家嘴，155 米海底隧道。',
+    view: { zoom: 17, pitch: 58, bearing: 150 },
+  },
+  {
+    id: 'power-station-art',
+    name: '上海当代艺术博物馆',
+    category: '文化',
+    lon: 121.5030,
+    lat: 31.1990,
+    note: '南市发电厂大烟囱改建。',
+    view: { zoom: 17, pitch: 58, bearing: 30 },
+  },
+  {
+    id: 'west-bund',
+    name: '西岸艺术中心',
+    category: '文化',
+    lon: 121.4450,
+    lat: 31.1830,
+    note: '徐汇滨江的厂房改造美术馆带。',
+    view: { zoom: 16.5, pitch: 58, bearing: 100 },
+  },
+  {
+    id: 'shanghai-library',
+    name: '上海图书馆',
+    category: '文化',
+    lon: 121.4490,
+    lat: 31.2070,
+    note: '淮海中路馆，馆藏丰富。',
+    view: { zoom: 17, pitch: 58, bearing: 210 },
+  },
+  {
+    id: 'sinan-residences',
+    name: '思南公馆',
+    category: '历史',
+    lon: 121.4610,
+    lat: 31.2170,
+    note: '思南路花园洋房群。',
+    view: { zoom: 17, pitch: 60, bearing: 300 },
+  },
+  {
+    id: 'century-park',
+    name: '世纪公园',
+    category: '公园',
+    lon: 121.5490,
+    lat: 31.2070,
+    note: '浦东最大的城市公园，世纪花钟。',
+    view: { zoom: 15.5, pitch: 55, bearing: 30 },
+  },
+  {
+    id: 'sjtu',
+    name: '上海交通大学',
+    category: '校园',
+    lon: 121.4330,
+    lat: 31.2020,
+    note: '徐汇校区，红砖老楼与庙门。',
+    view: { zoom: 17, pitch: 58, bearing: 180 },
+  },
+];
+
+// 扩展搜索集：上海知名 POI（近似坐标，Demo 精度）。仅用于搜索与浏览。
+// 2026-10-03 参赛轮：原 36 条中 12 条升为故事地标（上移 landmarks），新增 12 条，共 36 条。
+export const extraPois: Landmark[] = [
+  { id: 'wildlife-park', name: '上海野生动物园', category: '公园', lon: 121.7020, lat: 31.1330, note: '浦东的国家 5A 级动物园。' },
+  { id: 'jinjiang-park', name: '锦江乐园', category: '公园', lon: 121.4090, lat: 31.1560, note: '上海最早的现代化游乐园。' },
+  { id: 'natural-history-museum', name: '上海自然博物馆', category: '文化', lon: 121.4625, lat: 31.2305, note: '静安雕塑公园内，旧棉纺厂改造。' },
+  { id: 'library-east', name: '上海图书馆东馆', category: '文化', lon: 121.5300, lat: 31.2050, note: '浦东新馆，2018 年结构封顶。' },
+  { id: 'symphony-hall', name: '上海交响乐团音乐厅', category: '文化', lon: 121.4480, lat: 31.2010, note: '复兴中路，矶崎新设计。' },
+  { id: 'plaza-66', name: '恒隆广场', category: '商业', lon: 121.4510, lat: 31.2250, note: '南京西路顶级商场，288 米主楼。' },
+  { id: 'huaihai-road', name: '淮海中路', category: '商业', lon: 121.4570, lat: 31.2180, note: '梧桐掩映的商业街，原霞飞路。' },
+  { id: 'soong-ching-ling', name: '宋庆龄故居', category: '历史', lon: 121.4450, lat: 31.2110, note: '淮海中路的白色洋楼，香樟蔽日。' },
+  { id: 'meller-villa', name: '马勒别墅', category: '历史', lon: 121.4625, lat: 31.2200, note: '北欧风情花园别墅，1936 年。' },
+  { id: 'changde-apartment', name: '常德公寓', category: '历史', lon: 121.4590, lat: 31.2230, note: '张爱玲故居，《公寓生活记趣》写的就是这里。' },
+  { id: 'waibaidu-bridge', name: '外白渡桥', category: '历史', lon: 121.4910, lat: 31.2470, note: '苏州河口钢桁架桥，1907 年。' },
+  { id: 'expo-site', name: '世博园旧址', category: '历史', lon: 121.5010, lat: 31.1880, note: '2010 年世博会场地，今为世博文化公园。' },
+  { id: 'riverside-park-yangpu', name: '杨浦滨江公园', category: '公园', lon: 121.5260, lat: 31.2800, note: '工业锈带改造的滨水步道。' },
+  { id: 'luxun-park', name: '鲁迅公园', category: '公园', lon: 121.4770, lat: 31.2770, note: '虹口，鲁迅墓与纪念亭。' },
+  { id: 'duolun-road', name: '多伦路文化名人街', category: '历史', lon: 121.4790, lat: 31.2710, note: '鲁迅、茅盾、丁玲曾在此居住。' },
+  { id: 'shanghai-circus', name: '上海马戏城', category: '文化', lon: 121.4630, lat: 31.2700, note: '共和新路上的金色穹顶。' },
+  { id: 'daning-park', name: '大宁公园', category: '公园', lon: 121.4550, lat: 31.2710, note: '闸北的湿地与郁金香。' },
+  { id: 'shanghai-railway', name: '上海火车站', category: '商业', lon: 121.4580, lat: 31.2520, note: '当地人喊「新客站」，1987 年启用。' },
+  { id: 'jingan-sculpture', name: '静安雕塑公园', category: '公园', lon: 121.4530, lat: 31.2240, note: '自然博物馆旁的城市绿地。' },
+  { id: 'fuxing-park', name: '复兴公园', category: '公园', lon: 121.4590, lat: 31.2160, note: '法式风情，上海最早的公园之一。' },
+  { id: 'museum-east', name: '上海博物馆东馆', category: '文化', lon: 121.5300, lat: 31.2030, note: '浦东花木区域，2023 年开放。' },
+  { id: 'xuhui-riverside', name: '徐汇滨江', category: '公园', lon: 121.4430, lat: 31.1880, note: '黄浦江中游的开放水岸。' },
+  // ---- 2026-10-03 新增 12 条 ----
+  { id: 'shanghai-music-hall', name: '上海音乐厅', category: '文化', lon: 121.4780, lat: 31.2262, note: '1930 年的南京大戏院，整体平移保留。' },
+  { id: 'lyceum-theatre', name: '兰心大戏院', category: '文化', lon: 121.4520, lat: 31.2162, note: '茂名南路上的老牌剧院。' },
+  { id: 'midea-theatre', name: '美琪大戏院', category: '文化', lon: 121.4610, lat: 31.2333, note: '江宁路，1941 年的开业广告位旧址。' },
+  { id: 'jingan-kerry-center', name: '静安嘉里中心', category: '商业', lon: 121.4520, lat: 31.2233, note: '南京西路的商业综合体。' },
+  { id: 'global-harbor', name: '环球港', category: '商业', lon: 121.4080, lat: 31.2468, note: '普陀的超大型商场，仿欧式穹顶。' },
+  { id: 'luxun-former-residence', name: '鲁迅故居', category: '历史', lon: 121.4779, lat: 31.2763, note: '山阴路大陆新村，鲁迅最后的居所。' },
+  { id: 'ccp-2nd-site', name: '中共二大会址', category: '历史', lon: 121.4623, lat: 31.2251, note: '老成都北路，辅德里的石库门。' },
+  { id: 'sun-yat-sen-residence', name: '孙中山故居', category: '历史', lon: 121.4653, lat: 31.2222, note: '香山路 7 号，1918-1925 年居所。' },
+  { id: 'yuyuan-road', name: '愚园路', category: '街区', lon: 121.4280, lat: 31.2218, note: '百年马路，弄堂与名人旧居密集。' },
+  { id: 'lujiazui-green', name: '陆家嘴中心绿地', category: '公园', lon: 121.5060, lat: 31.2350, note: '高楼群中的 10 公顷草坪。' },
+  { id: 'shipyard-1862', name: '上海船厂 1862', category: '历史', lon: 121.5233, lat: 31.2399, note: '老船厂车间改的商业艺术空间。' },
+  { id: 'oriental-land', name: '东方绿舟', category: '公园', lon: 121.1800, lat: 31.1400, note: '青浦的大型青少年活动基地。' },
+];
+
+// 搜索索引：策展地标优先，其次扩展集
+export const searchableLandmarks: Landmark[] = [...landmarks, ...extraPois];
+
+export const SHANGHAI_CENTER: [number, number] = [121.4905, 31.229];

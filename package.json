@@ -1,0 +1,21 @@
+{
+  "name": "atria-demo-v1",
+  "version": "0.1.0",
+  "description": "上海 3D 可交互地图 Demo（Atria 驱动）",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit -p tsconfig.json && vite build",
+    "preview": "vite preview --host"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^26.6.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.2"
+  },
+  "dependencies": {
+    "maplibre-gl": "^6.11.2",
+    "pmtiles": "^4.5.0"
+  }
+}

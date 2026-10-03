@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>上海 · 3D 可交互地图</title>
+    <script type="module" crossorigin src="/assets/index-C5hsQ_pn.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CTOlDgxz.css">
+  </head>
+  <body>
+    <div id="app">
+      <header id="topbar">
+        <div class="brand">上海 · 3D 城市漫游</div>
+        <div class="brand-sub">atria-demo-v1</div>
+        <div class="topbar-actions">
+          <button id="gallery-btn" type="button" title="故事图鉴（已读进度）">图鉴</button>
+          <div class="more-menu">
+            <button id="more-btn" type="button" title="更多">更多</button>
+            <div id="more-dropdown" class="hidden">
+              <button id="guide-btn" type="button" title="打开操作指引（四格）">操作指引</button>
+              <button id="about-btn" type="button" title="了解本作品">关于作品</button>
+            </div>
+          </div>
+          <button id="tour-btn" type="button" title="观影模式：沿固定航线自动飞行">跟随导览</button>
+          <button id="flight-btn" class="primary" type="button" title="进入模拟飞行器视角（Esc 退出）">开始城市飞行</button>
+        </div>
+      </header>
+      <div id="map"></div>
+      <aside id="panel">
+        <div class="panel-search">
+          <input id="search-box" type="text" placeholder="搜索地标 / 地点…" autocomplete="off" spellcheck="false" />
+          <div id="search-results" class="hidden"></div>
+        </div>
+        <div id="user-places" class="hidden">
+          <div class="panel-title">我的地点</div>
+          <ul id="user-place-list"></ul>
+        </div>
+        <div class="panel-title">地标</div>
+        <ul id="landmark-list"></ul>
+        <div id="info-card" class="hidden">
+          <div class="info-title" id="info-title"></div>
+          <dl id="info-rows"></dl>
+        </div>
+      </aside>
+      <div id="flight-hud" class="hidden">
+        <div class="hud-title">模拟飞行</div>
+        <div class="hud-grid">
+          <div class="hud-cell"><span class="hud-label">速度</span><span class="hud-value"><b id="hud-speed">0</b><i>km/h</i></span></div>
+          <div class="hud-cell"><span class="hud-label">高度</span><span class="hud-value"><b id="hud-alt">0</b><i>m</i></span></div>
+          <div class="hud-cell"><span class="hud-label">航向</span><span class="hud-value"><b id="hud-heading">000°</b></span></div>
+          <div class="hud-cell"><span class="hud-label">视角</span><span class="hud-value"><b id="hud-view">追尾</b></span></div>
+        </div>
+        <div class="hud-cell hud-throttle-cell">
+          <span class="hud-label">油门</span>
+          <span class="hud-throttle"><span id="hud-throttle-fill"></span></span>
+        </div>
+        <div class="hud-cell hud-nav-cell hidden" id="hud-nav" title="导航指引：箭头指向目标">
+          <span class="hud-label">导航</span>
+          <span class="hud-nav-arrow" id="hud-nav-arrow">➤</span>
+          <span class="hud-value"><b id="hud-nav-dist">—</b></span>
+        </div>
+        <!-- V1R3-003：驾驶教学只在驾驶模式显示；导览与座舱见 hud-mini -->
+        <div class="hud-keys" id="hud-keys">
+          <span><b>W/S</b> 俯仰</span><span><b>A/D</b> 横滚</span>
+          <span><b>Shift</b> 加油门</span><span><b>Ctrl/Z</b> 减油门</span>
+          <span><b>空格</b> 爬升</span><span><b>V</b> 切换视角</span>
+          <span><b>Esc/R</b> 退出</span>
+        </div>
+        <!-- V1R3-003：座舱模式精简提示（替代重复仪表与按键教学） -->
+        <div class="hud-mini hidden" id="hud-mini">
+          <span><b>V</b> 追尾视角</span><span><b>Esc</b> 退出</span>
+        </div>
+      </div>
+      <div id="attribution">
+        数据 ©
+        <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>
+        · 瓦片由
+        <a href="https://openfreemap.org/" target="_blank" rel="noopener">OpenFreeMap</a>
+        提供 · 地点搜索由
+        <a href="https://nominatim.org/" target="_blank" rel="noopener">Nominatim</a>
+        提供
+      </div>
+      <div id="arrival-toast" class="hidden"></div>
+      <!-- 首屏动作卡：首次访问、开场镜头结束后出现 -->
+      <div id="intro-card" class="hidden">
+        <div class="ic-title">飞过上海，也读懂上海</div>
+        <div class="ic-sub">一座可以在空中漫游、读故事的 3D 城市</div>
+        <div class="ic-actions">
+          <button id="ic-flight" class="primary" type="button">开始城市飞行</button>
+          <button id="ic-tour" type="button">跟随导览</button>
+          <button id="ic-explore" type="button">自己逛逛</button>
+        </div>
+        <div class="ic-hint">飞行：W/S 俯仰 · A/D 横滚 · Esc 退出</div>
+      </div>
+      <!-- 飞行速度线：高速时屏幕两侧的流动线条（透明度门控，无 hidden 类） -->
+      <div id="speed-lines">
+        <div class="sl-side sl-left"></div>
+        <div class="sl-side sl-right"></div>
+      </div>
+    </div>
+  </body>
+</html>
